@@ -45,4 +45,23 @@ angular.module('conFusion.services', ['ngResource'])
 
         }])
 
+        .factory('favoriteFactory', ['$resource', 'baseURL', function ($resource, baseURL) {
+
+          var favFac = {};
+          
+          // to store all the fav dishes
+          var favorites = [];
+
+          favFac.addToFavorites = function (index) {
+            // to make sure that we are not adding a dish that's there
+            for (var i = 0; i < favorites.length; i++) {
+              if (favorites[i].id == index) return;
+            }
+            // to add it if it's not there
+            favorites.push({id: index});
+          };
+
+          return favFac;
+        }])
+
 ;
