@@ -204,12 +204,13 @@ angular.module('conFusion.controllers', [])
     };
 }])
 
-.controller('DishDetailController', ['$scope', '$stateParams', 'menuFactory', 'baseURL', '$ionicPopover', 'favoriteFactory', function($scope, $stateParams, menuFactory, baseURL, $ionicPopover, favoriteFactory) {
+.controller('DishDetailController', ['$scope', '$stateParams', 'menuFactory', 'baseURL', '$ionicPopover', 'favoriteFactory', '$ionicModal', function($scope, $stateParams, menuFactory, baseURL, $ionicPopover, favoriteFactory, $ionicModal) {
 
     $scope.baseURL = baseURL;
     $scope.dish = {};
     $scope.showDish = false;
     $scope.message="Loading ...";
+    $scope.comment = {rating:5, comment:"", author:"", date:""};
 
     $scope.dish = menuFactory.getDishes().get({id:parseInt($stateParams.id,10)})
     .$promise.then(
@@ -237,12 +238,39 @@ angular.module('conFusion.controllers', [])
 
     // To be used in the navbar to show the popover
     $scope.openPopover = function($event) {
+
       $scope.popover.show($event);
     };
 
     // will use to dismiss the popover
     $scope.closePopover = function() {
       $scope.popover.hide();
+    };
+
+    $ionicModal.fromTemplateUrl('templates/dish-comment.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.modal = modal;
+    });
+    $scope.openCommentModal = function() {
+      $scope.popover.hide();
+      $scope.modal.show();
+    };
+    $scope.closeCommentModal = function() {
+      $scope.modal.hide();
+    };
+
+    $scope.submitComment = function () {
+
+        $scope.comment.date = new Date().toISOString();
+        console.log($scope.comment);
+
+        $scope.dish.comments.push($scope.comment);
+        menuFactory.getDishes().update({id:$scope.dish.id},$scope.dish);
+
+        $scope.modal.hide();
+
     };
 
 }])
@@ -257,7 +285,7 @@ angular.module('conFusion.controllers', [])
         console.log($scope.mycomment);
 
         $scope.dish.comments.push($scope.mycomment);
-menuFactory.getDishes().update({id:$scope.dish.id},$scope.dish);
+        menuFactory.getDishes().update({id:$scope.dish.id},$scope.dish);
 
         $scope.commentForm.$setPristine();
 
