@@ -204,7 +204,7 @@ angular.module('conFusion.controllers', [])
     };
 }])
 
-.controller('DishDetailController', ['$scope', '$stateParams', 'menuFactory', 'baseURL', '$ionicPopover', function($scope, $stateParams, menuFactory, baseURL, $ionicPopover) {
+.controller('DishDetailController', ['$scope', '$stateParams', 'menuFactory', 'baseURL', '$ionicPopover', 'favoriteFactory', function($scope, $stateParams, menuFactory, baseURL, $ionicPopover, favoriteFactory) {
 
     $scope.baseURL = baseURL;
     $scope.dish = {};
@@ -228,14 +228,22 @@ angular.module('conFusion.controllers', [])
       $scope.popover = popover;
     });
 
+    // to add the current dish to the favorites list
+    $scope.addFavorite = function () {
+        console.log("index is " + parseInt($stateParams.id,10));
+        favoriteFactory.addToFavorites(parseInt($stateParams.id,10));
+        $scope.popover.hide();
+    }
+
+    // To be used in the navbar to show the popover
     $scope.openPopover = function($event) {
       $scope.popover.show($event);
     };
-    
+
+    // will use to dismiss the popover
     $scope.closePopover = function() {
       $scope.popover.hide();
     };
-
 
 }])
 
