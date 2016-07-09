@@ -27,7 +27,6 @@ angular.module('conFusion.controllers', [])
     console.log('Doing login', $scope.loginData);
 
     // save the user data to the local storage
-
     $localStorage.storeObj('userData', $scope.loginData);
 
     // Simulate a login delay. Remove this and replace with your login
@@ -38,7 +37,6 @@ angular.module('conFusion.controllers', [])
   };
 
   // modal for the reservation form
-
   $scope.reservation = {};
 
   // Create the reserve modal that we will use later
@@ -81,6 +79,7 @@ angular.module('conFusion.controllers', [])
     $scope.dishes = dishes;
 
     $scope.toggleDelete = function () {
+
         $scope.shouldShowDelete = !$scope.shouldShowDelete;
         console.log($scope.shouldShowDelete);
     }
@@ -102,9 +101,7 @@ angular.module('conFusion.controllers', [])
         });
 
         $scope.shouldShowDelete = false;
-
     }
-
   }])
 
 .controller('MenuController', ['$scope', 'menuFactory', 'baseURL', 'favoriteFactory', '$ionicListDelegate', function($scope, menuFactory, baseURL, favoriteFactory, $ionicListDelegate) {
@@ -178,7 +175,6 @@ angular.module('conFusion.controllers', [])
 
         if ($scope.feedback.agree && ($scope.feedback.mychannel == "")) {
             $scope.invalidChannelSelection = true;
-            console.log('incorrect');
         }
         else {
             $scope.invalidChannelSelection = false;
@@ -186,7 +182,6 @@ angular.module('conFusion.controllers', [])
             $scope.feedback = {mychannel:"", firstName:"", lastName:"", agree:false, email:"" };
             $scope.feedback.mychannel="";
             $scope.feedbackForm.$setPristine();
-            console.log($scope.feedback);
         }
     };
 }])
@@ -218,7 +213,6 @@ angular.module('conFusion.controllers', [])
 
     // to add the current dish to the favorites list
     $scope.addFavorite = function () {
-        console.log("index is " + parseInt($stateParams.id,10));
         favoriteFactory.addToFavorites(parseInt($stateParams.id,10));
         $scope.popover.hide();
     }
@@ -237,29 +231,26 @@ angular.module('conFusion.controllers', [])
     $ionicModal.fromTemplateUrl('templates/dish-comment.html', {
       scope: $scope,
       animation: 'slide-in-up'
-    }).then(function(modal) {
-      $scope.modal = modal;
-    });
-    $scope.openCommentModal = function() {
-      $scope.popover.hide();
-      $scope.modal.show();
-    };
-    $scope.closeCommentModal = function() {
-      $scope.modal.hide();
-    };
+      }).then(function(modal) {
+        $scope.modal = modal;
+      });
+      $scope.openCommentModal = function() {
+        $scope.popover.hide();
+        $scope.modal.show();
+      };
+      $scope.closeCommentModal = function() {
+        $scope.modal.hide();
+      };
 
-    $scope.submitComment = function () {
+      $scope.submitComment = function () {
 
         $scope.comment.date = new Date().toISOString();
-        console.log($scope.comment);
 
         $scope.dish.comments.push($scope.comment);
         menuFactory.update({id:$scope.dish.id},$scope.dish);
 
         $scope.modal.hide();
-
-    };
-
+      };
 }])
 
 .controller('DishCommentController', ['$scope', 'menuFactory', function($scope,menuFactory) {
@@ -269,7 +260,6 @@ angular.module('conFusion.controllers', [])
     $scope.submitComment = function () {
 
         $scope.mycomment.date = new Date().toISOString();
-        console.log($scope.mycomment);
 
         $scope.dish.comments.push($scope.mycomment);
         menuFactory.update({id:$scope.dish.id},$scope.dish);
@@ -279,8 +269,6 @@ angular.module('conFusion.controllers', [])
         $scope.mycomment = {rating:5, comment:"", author:"", date:""};
     }
 }])
-
-// implement the IndexController and About Controller here
 
 .controller('IndexController', ['$scope', 'dish', 'promotion', 'baseURL', 'leader', function ($scope, dish, promotion, baseURL, leader) {
 
@@ -295,13 +283,11 @@ angular.module('conFusion.controllers', [])
 
 }])
 
-.controller('AboutController', ['$scope', 'corporateFactory', 'baseURL', function($scope, corporateFactory, baseURL) {
+.controller('AboutController', ['$scope', 'leaders', 'baseURL', function($scope, leaders, baseURL) {
 
             $scope.baseURL = baseURL;
-            $scope.leaders = corporateFactory.query();
-            console.log($scope.leaders);
-
-            }])
+            $scope.leaders = leaders;
+}])
 
 .filter('favoriteFilter', function () {
     return function (dishes, favorites) {
@@ -314,7 +300,4 @@ angular.module('conFusion.controllers', [])
         }
         return out;
 
-    }});
-
-
-;
+}});

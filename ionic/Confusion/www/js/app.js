@@ -76,7 +76,12 @@ $rootScope.$on('loading:show', function () {
       views: {
         'mainContent': {
           templateUrl: 'templates/aboutus.html',
-          controller: 'AboutController'
+          controller: 'AboutController',
+          resolve: {
+            leaders: ['corporateFactory', function(corporateFactory) {
+              return corporateFactory.query();
+            }]
+          }
         }
       }
     })
