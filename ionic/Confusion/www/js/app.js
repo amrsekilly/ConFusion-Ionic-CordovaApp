@@ -119,7 +119,12 @@ $rootScope.$on('loading:show', function () {
       views: {
         'mainContent': {
           templateUrl: 'templates/menu.html',
-          controller: 'MenuController'
+          controller: 'MenuController',
+          resolve: {
+            dishes: ['menuFactory', function(menuFactory) {
+              return menuFactory.query();
+            }]
+          }
         }
       }
     })
