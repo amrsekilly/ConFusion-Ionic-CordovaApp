@@ -13,7 +13,7 @@ angular.module('conFusion', ['ionic', 'conFusion.controllers', 'conFusion.servic
     	if (window.cordova && window.cordova.plugins.Keyboard) {
       		cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       		cordova.plugins.Keyboard.disableScroll(true);
-   	 }	
+   	 }
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
@@ -55,7 +55,18 @@ $rootScope.$on('loading:show', function () {
     views: {
       'mainContent': {
         templateUrl: 'templates/home.html',
-        controller: 'IndexController'
+        controller: 'IndexController',
+        resolve: {
+          leader: ['corporateFactory', function(corporateFactory) {
+            return corporateFactory.get({id:3});
+          }],
+          dish: ['menuFactory', function(menuFactory) {
+            return menuFactory.get({id:0});
+          }],
+          promotion: ['promotionFactory', function(promotionFactory) {
+            return promotionFactory.get({id:0});
+          }]
+        }
       }
     }
   })
