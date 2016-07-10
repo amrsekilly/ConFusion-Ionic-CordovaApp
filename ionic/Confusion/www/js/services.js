@@ -5,11 +5,11 @@ angular.module('conFusion.services', ['ngResource'])
 
     .factory('menuFactory', ['$resource', 'baseURL', function ($resource, baseURL) {
 
-                return $resource(baseURL + "dishes/:id", null, {
-                    'update': {
-                        method: 'PUT'
-                    }
-                });
+      return $resource(baseURL + "dishes/:id", null, {
+          'update': {
+              method: 'PUT'
+          }
+      });
     }])
 
     .factory('$localStorage', ['$window', function($window) {
@@ -32,7 +32,7 @@ angular.module('conFusion.services', ['ngResource'])
 
     .factory('promotionFactory', ['$resource', 'baseURL', function ($resource, baseURL) {
 
-        return $resource(baseURL + "promotions/:id");
+      return $resource(baseURL + "promotions/:id");
     }])
 
     .factory('corporateFactory', ['$resource', 'baseURL', function($resource,baseURL) {
