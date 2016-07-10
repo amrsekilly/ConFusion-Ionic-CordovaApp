@@ -1,4 +1,5 @@
 # Intro
+![the app running on both iOS and Android](./overview.png)
 This repository contains my work during the MOOC [Multiplatform Mobile App Development with Web Technologies](https://www.coursera.org/learn/hybrid-mobile-development) as part of the [Full stack web development specialization](https://www.coursera.org/specializations/full-stack).
 
 # Repository contents
