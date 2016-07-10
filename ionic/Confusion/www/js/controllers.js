@@ -142,7 +142,7 @@ angular.module('conFusion.controllers', [])
 
     // to add the dish to the favorites and dismess the + button
     $scope.addFavorite = function (index) {
-
+      
       favoriteFactory.addToFavorites(index);
       $ionicListDelegate.closeOptionButtons();
 
