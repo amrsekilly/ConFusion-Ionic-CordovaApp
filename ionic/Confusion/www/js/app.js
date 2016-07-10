@@ -4,43 +4,52 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('conFusion', ['ionic', 'conFusion.controllers', 'conFusion.services'])
+angular.module('conFusion', ['ionic', 'ngCordova', 'conFusion.controllers', 'conFusion.services'])
 
-  .run(function($ionicPlatform, $rootScope, $ionicLoading) {
-	$ionicPlatform.ready(function() {
-    	// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    	// for form inputs)
-    	if (window.cordova && window.cordova.plugins.Keyboard) {
-      		cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-      		cordova.plugins.Keyboard.disableScroll(true);
-   	 }
-    if (window.StatusBar) {
-      // org.apache.cordova.statusbar required
-      StatusBar.styleDefault();
-    }
-  });
-$rootScope.$on('loading:show', function () {
+  .run(function($ionicPlatform, $rootScope, $ionicLoading, $cordovaSplashscreen, $timeout) {
+
+      $ionicPlatform.ready(function() {
+
+        // wait a moment then dismess the splash screen
+        $timeout(function () {
+          $cordovaSplashscreen.hide();
+        }, 2000);
+
+      	// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+      	// for form inputs)
+      	if (window.cordova && window.cordova.plugins.Keyboard) {
+        	cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+        	cordova.plugins.Keyboard.disableScroll(true);
+     	  }
+        if (window.StatusBar) {
+          // org.apache.cordova.statusbar required
+          StatusBar.styleDefault();
+        }
+      });
+
+      $rootScope.$on('loading:show', function () {
         $ionicLoading.show({
             template: '<ion-spinner></ion-spinner> Loading ...'
         })
-    });
+      });
 
-    $rootScope.$on('loading:hide', function () {
+      $rootScope.$on('loading:hide', function () {
         $ionicLoading.hide();
-    });
+      });
 
-    $rootScope.$on('$stateChangeStart', function () {
+      $rootScope.$on('$stateChangeStart', function () {
         console.log('Loading ...');
         $rootScope.$broadcast('loading:show');
-    });
+      });
 
-    $rootScope.$on('$stateChangeSuccess', function () {
+      $rootScope.$on('$stateChangeSuccess', function () {
         console.log('done');
         $rootScope.$broadcast('loading:hide');
-    });
-})
+      });
+    })
 
 .config(function($stateProvider, $urlRouterProvider) {
+
   $stateProvider
 
   .state('app', {
@@ -137,7 +146,7 @@ $rootScope.$on('loading:show', function () {
           controller: 'DishDetailController',
           resolve: {
               dish: ['$stateParams','menuFactory', function($stateParams, menuFactory){
-                  return menuFactory.get({id:parseInt($stateParams.id, 10)});
+                return menuFactory.get({id:parseInt($stateParams.id, 10)});
               }]
           }
         }
