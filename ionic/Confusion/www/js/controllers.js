@@ -149,13 +149,11 @@ angular.module('conFusion.controllers', [])
 
 })
 
-.controller('FavoritesController', ['$scope', 'dishes', 'favorites', 'favoriteFactory', 'baseURL', '$ionicListDelegate', '$ionicPopup', '$ionicLoading', '$timeout', function ($scope, dishes, favorites, favoriteFactory, baseURL, $ionicListDelegate, $ionicPopup, $ionicLoading, $timeout) {
+.controller('FavoritesController', ['$scope', 'dishes', 'favorites', 'favoriteFactory', 'baseURL', '$ionicListDelegate', '$ionicPopup', '$ionicLoading', '$timeout', '$ionicPlatform', '$cordovaVibration', function ($scope, dishes, favorites, favoriteFactory, baseURL, $ionicListDelegate, $ionicPopup, $ionicLoading, $timeout, $ionicPlatform, $cordovaVibration) {
 
     $scope.baseURL = baseURL;
     $scope.shouldShowDelete = false;
-
     $scope.favorites = favorites;
-
     $scope.dishes = dishes;
 
     $scope.toggleDelete = function () {
@@ -174,6 +172,9 @@ angular.module('conFusion.controllers', [])
         if (res) {
             console.log('Ok to delete');
             favoriteFactory.deleteFromFavorites(index);
+            $ionicPlatform.ready(function() {
+              $cordovaVibration.vibrate([100, 300, 100]);
+            });
         } else {
             console.log('Canceled delete');
         }
