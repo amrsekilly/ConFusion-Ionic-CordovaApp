@@ -34,20 +34,20 @@ angular.module('conFusion.controllers', [])
 
   $ionicPlatform.ready(function() {
 
-    var takePicOptions = {
-      quality: 50,
-      destinationType: Camera.DestinationType.DATA_URL,
-      sourceType: Camera.PictureSourceType.CAMERA,
-      allowEdit: true,
-      encodingType: Camera.EncodingType.JPEG,
-      targetWidth: 100,
-      targetHeight: 100,
-      cameraDirection: 1,
-      popoverOptions: CameraPopoverOptions,
-      saveToPhotoAlbum: false
-    };
-
    $scope.takePicture = function() {
+
+     var takePicOptions = {
+       quality: 50,
+       destinationType: Camera.DestinationType.DATA_URL,
+       sourceType: Camera.PictureSourceType.CAMERA,
+       allowEdit: true,
+       encodingType: Camera.EncodingType.JPEG,
+       targetWidth: 100,
+       targetHeight: 100,
+       cameraDirection: 1,
+       popoverOptions: CameraPopoverOptions,
+       saveToPhotoAlbum: false
+     };
 
      $cordovaCamera.getPicture(takePicOptions)
      .then(function(imageData) {
@@ -275,7 +275,7 @@ angular.module('conFusion.controllers', [])
   };
 }])
 
-.controller('DishDetailController', ['$scope', '$stateParams', 'menuFactory', 'baseURL', '$ionicPopover', 'favoriteFactory', '$ionicModal', function($scope, $stateParams, menuFactory, baseURL, $ionicPopover, favoriteFactory, $ionicModal) {
+.controller('DishDetailController', ['$scope', '$stateParams', '$ionicPlatform', '$cordovaLocalNotification', '$cordovaToast', 'menuFactory', 'baseURL', '$ionicPopover', 'favoriteFactory', '$ionicModal', function($scope, $stateParams, $ionicPlatform, $cordovaLocalNotification, $cordovaToast, menuFactory, baseURL, $ionicPopover, favoriteFactory, $ionicModal) {
 
     $scope.baseURL = baseURL;
     $scope.dish = {};
@@ -304,6 +304,28 @@ angular.module('conFusion.controllers', [])
 
       favoriteFactory.addToFavorites(parseInt($stateParams.id,10));
       $scope.popover.hide();
+
+      // to notify the user
+      $ionicPlatform.ready(function () {
+        $cordovaLocalNotification.schedule({
+          id: 2,
+          title: "Added Favorite",
+          text: $scope.dish.name
+        }).then(function () {
+          console.log('Added Favorite '+$scope.dish.name);
+        },
+        function () {
+          console.log('Failed to add Notification ');
+        });
+
+        $cordovaToast
+          .show('Added Favorite '+$scope.dish.name, 'long', 'bottom')
+          .then(function (success) {
+            // success
+          }, function (error) {
+            // error
+          });
+      });
     }
 
     // To be used in the navbar to show the popover
