@@ -71,7 +71,7 @@ angular.module('conFusion.controllers', [])
 
     $cordovaImagePicker.getPictures(choosePicOptions)
       .then(function (image) {
-        $scope.registration.imgSrc =  image;
+        $scope.registration.imgSrc =  image[0];
       }, function(error) {
         // error getting photos
     });
