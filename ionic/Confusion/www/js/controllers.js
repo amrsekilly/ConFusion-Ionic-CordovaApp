@@ -1,6 +1,6 @@
 angular.module('conFusion.controllers', [])
 
-.controller('AppCtrl', function ($scope, $ionicModal, $timeout, $localStorage, $ionicPlatform, $cordovaCamera){
+.controller('AppCtrl', function ($scope, $ionicModal, $timeout, $localStorage, $ionicPlatform, $cordovaCamera, $cordovaImagePicker){
 
 
   $scope.registration = {};
@@ -34,7 +34,7 @@ angular.module('conFusion.controllers', [])
 
   $ionicPlatform.ready(function() {
 
-    var options = {
+    var takePicOptions = {
       quality: 50,
       destinationType: Camera.DestinationType.DATA_URL,
       sourceType: Camera.PictureSourceType.CAMERA,
@@ -49,7 +49,8 @@ angular.module('conFusion.controllers', [])
 
    $scope.takePicture = function() {
 
-     $cordovaCamera.getPicture(options).then(function(imageData) {
+     $cordovaCamera.getPicture(takePicOptions)
+     .then(function(imageData) {
         $scope.registration.imgSrc = "data:image/jpeg;base64," + imageData;
       }, function(err) {
         console.log(err);
@@ -57,7 +58,29 @@ angular.module('conFusion.controllers', [])
 
     $scope.registerform.show();
   };
+
+
+  $scope.choosePicture = function() {
+
+    var choosePicOptions = {
+     maximumImagesCount: 1,
+     width: 100,
+     height: 100,
+     quality: 50
+    };
+
+    $cordovaImagePicker.getPictures(choosePicOptions)
+      .then(function (image) {
+        $scope.registration.imgSrc =  image;
+      }, function(error) {
+        // error getting photos
+    });
+
+    $scope.registerform.show();
+  };
+
 });
+
 
   // Form data for the login modal
   $scope.loginData = $localStorage.getObj('userData', '{}');
